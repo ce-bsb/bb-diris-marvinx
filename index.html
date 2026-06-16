@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Marvin X — Ecossistema de Agentes | DIRIS Banco do Brasil × IBM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<!-- ── Portão de autenticação (token de acesso) ── -->
+<div id="authgate" role="dialog" aria-modal="true" aria-labelledby="authgate-title">
+  <form id="authgate-form" class="authgate-card" autocomplete="off">
+    <img class="authgate-logo" src="assets/imagem-capa.png" alt="Marvin X">
+    <h1 id="authgate-title">Marvin X</h1>
+    <p class="authgate-sub">Apresentação executiva · acesso restrito</p>
+    <label for="authgate-input">Código de acesso</label>
+    <input id="authgate-input" type="password" autocomplete="off" placeholder="••••••••" aria-describedby="authgate-error">
+    <button type="submit">Acessar</button>
+    <span id="authgate-error" class="authgate-error" role="alert" hidden>Código inválido. Tente novamente.</span>
+  </form>
+</div>
+
+<div class="presentation" aria-live="polite">
+
+  <!-- ── Top bar ── -->
+  <header class="topbar">
+    <div class="brand" aria-label="IBM">
+      <div class="brand-mark">
+        <img class="brand-logo" src="assets/ibm-logo-rev-cropped.png" alt="IBM">
+      </div>
+      <span class="brand-context">Marvin X — Apresentação Executiva</span>
+    </div>
+    <div class="topbar-meta">
+      <button class="utility-btn" type="button" id="fullscreenBtn" aria-label="Ativar tela cheia">Tela cheia</button>
+      <span class="slide-counter" id="counter" aria-live="polite">01 / 10</span>
+    </div>
+    <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
+  </header>
+
+  <!-- ── Slides ── -->
+  <main class="deck">
+
+    <!-- SLIDE 1 · HERO ─────────────────────────────────────── -->
+    <section class="slide active theme-light" data-slide="1">
+      <div class="slide-blob blob-1" aria-hidden="true"></div>
+      <div class="slide-blob blob-2" aria-hidden="true"></div>
+      <div class="slide-grid hero-grid hero-marvin">
+        <p class="section-label slide-label reveal">Apresentação Executiva</p>
+        <div class="hero-copy">
+          <h1 class="display-title reveal">Marvin X —<br><em>Ecossistema</em> de Agentes</h1>
+          <p class="lead reveal">Extração de entidades, sumarização de petições, classificação da origem da demanda e associação de produto/modalidade em petições iniciais. Pipeline multi-agente no IBM watsonx orchestrate.</p>
+          <div class="presenter-strip reveal" aria-label="Parceria">
+            <article>
+              <span>Diretorias · Banco do Brasil</span>
+              <strong>DIRIS — Diretoria de Gestão de Riscos</strong>
+              <strong>DITEC — Diretoria de Tecnologia</strong>
+            </article>
+            <article>
+              <span>Co-criação</span>
+              <strong>IBM Client Engineering</strong>
+              <small>Garagem IBM</small>
+            </article>
+          </div>
+        </div>
+        <div class="hero-panel reveal hero-panel-image" aria-label="Marvin X">
+          <img src="assets/imagem-capa.png" alt="Marvin X" data-zoom>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2 · DESAFIO ──────────────────────────────── -->
+    <section class="slide theme-light" data-slide="2">
+      <div class="slide-grid">
+        <p class="section-label slide-label reveal">01 / Desafio</p>
+        <div class="span-16">
+          <h2 class="section-title narrow reveal">Automatizar a jornada manual de <strong>classificação</strong> e <strong>associação</strong></h2>
+        </div>
+        <p class="span-11 body-lg reveal"><strong>Contexto:</strong> Hoje, a Petição Inicial (PI) é lida e categorizada por 22 analistas em etapas sequenciais. A subjetividade da interpretação pode gerar erros operacionais que se propagam ao sistema PAJ e culminam em contestações de perdas.</p>
+
+        <div class="span-16 reveal" style="margin-top: 28px;">
+          <div class="hypothesis">
+            <p><strong>HIPÓTESE:</strong> É possível empregar um ecossistema de multi-agentes de IA capaz de orquestrar e automatizar todo o processo — desde a extração de entidades e o resumo da petição até a classificação da Origem da Demanda e a associação de produto/modalidade — preservando a <strong>explicabilidade</strong>, a <strong>governança</strong> e o <strong>protagonismo humano</strong> na decisão final?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3 · JUSTIFICATIVA ────────────────────────────────── -->
+    <section class="slide theme-light" data-slide="3">
+      <div class="slide-grid">
+        <p class="section-label slide-label reveal">02 / Justificativa</p>
+        <div class="span-16">
+          <h2 class="section-title narrow reveal">Problemas identificados na <strong>jornada atual</strong></h2>
+        </div>
+
+        <div class="span-16 problems-grid reveal">
+          <article class="problem-card">
+            <h4>Processo manual e oneroso</h4>
+            <p>Tempo de cadastramento por petição cresce com o volume de processos — barreira de escala</p>
+          </article>
+          <article class="problem-card">
+            <h4>Subjetividade da interpretação humana</h4>
+            <p>Risco de erro operacional - analistas diferentes avaliam de forma diferente</p>
+          </article>
+          <article class="problem-card">
+            <h4>Falha na atribuição das perdas</h4>
+            <p>OD ou produto errado distorce a contabilidade de perdas operacionais por categoria</p>
+          </article>
+          <article class="problem-card">
+            <h4>Alta quantidade de contestações</h4>
+            <p>Reclamações dos clientes e revisões internas oneram a esteira e impactam reputação</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 · NOSSA PROPOSTA ────────────────────────────────── -->
+    <section class="slide theme-light" data-slide="4">
+      <div class="slide-grid flow-top">
+        <p class="section-label slide-label reveal">03 / Nossa proposta</p>
+        <div class="span-16">
+          <h2 class="section-title narrow reveal">Proposta para um <strong>ecossistema multiagente</strong></h2>
+        </div>
+        <p class="span-11 body-lg reveal">Pipeline multiagente para extração de entidades, sumarização de petições, classificação da origem da demanda e associação de produto/modalidade nas petições iniciais.</p>
+
+        <div class="synthesis-grid span-16 reveal">
+          <article class="synthesis-card">
+            <span>01</span>
+            <h3>Automatizar</h3>
+            <p>Extrair a seção DOS FATOS, resumir, classificar a OD e associar produtos sem intervenção humana repetitiva</p>
+          </article>
+          <article class="synthesis-card">
+            <span>02</span>
+            <h3>Padronizar</h3>
+            <p>Reduzir a variabilidade entre analistas com critérios determinísticos (SVM + busca por contrato)</p>
+          </article>
+          <article class="synthesis-card">
+            <span>03</span>
+            <h3>Explicar</h3>
+            <p>Cada predição traz trechos de suporte, vetores TF-IDF e likelihood — auditável e defensável</p>
+          </article>
+        </div>
+
+        <div class="span-16 reveal" style="margin-top:20px;">
+          <p class="section-label" style="margin-bottom:10px;">Recursos e ferramentas empregadas</p>
+          <div class="terms-cloud one-line">
+            <span class="term-chip high">IBM watsonx.ai</span>
+            <span class="term-chip high">IBM watsonx Orchestrate (ADK)</span>
+            <span class="term-chip high">IBM watsonx.data — Milvus</span>
+            <span class="term-chip high">IBM Watson Machine Learning (WML)</span>
+            <span class="term-chip high">IBM Code Engine</span>
+            <span class="term-chip high">InstructLab</span>
+            <span class="term-chip high">HuggingFace Hub</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5 · PREMISSAS DA SOLUÇÃO ─────────────────────────── -->
+    <section class="slide theme-light" data-slide="5">
+      <div class="slide-grid flow-top">
+        <p class="section-label slide-label reveal">04 / Premissas da solução</p>
+        <div class="span-16">
+          <h2 class="section-title narrow reveal">Premissas que <strong>delimitam</strong> a solução</h2>
+        </div>
+        <p class="span-11 body-lg reveal">Condições assumidas para a fase de co-criação e piloto na garagem. Elas definem as fronteiras do escopo atual e o que fica para a fase de produção, em conjunto com a DITEC.</p>
+
+        <div class="span-16 premise-grid reveal">
+          <article class="premise-card">
+            <span class="premise-num">01</span>
+            <div>
+              <h4>OCR operacional</h4>
+              <p>Tem-se como premissa que o pipeline de OCR do BB já esteja operacional e que as petições de entrada da solução já estejam processadas por esse pipeline.</p>
+            </div>
+          </article>
+          <article class="premise-card">
+            <span class="premise-num">02</span>
+            <div>
+              <h4>Dados iniciais</h4>
+              <p>Em tempo de piloto, empregaremos as petições cadastradas na base PAJ do Hive.</p>
+            </div>
+          </article>
+          <article class="premise-card">
+            <span class="premise-num">03</span>
+            <div>
+              <h4>Anonimização dos dados de produção</h4>
+              <p>Em tempo de piloto, os dados dos clientes para validação da associação de produto/modalidade — código MCI do cliente e código de operação/contrato — serão anonimizados.</p>
+            </div>
+          </article>
+          <article class="premise-card">
+            <span class="premise-num">04</span>
+            <div>
+              <h4>Integrações na fase de produção</h4>
+              <p>As integrações com sistemas corporativos, APIs e microserviços do portal jurídico serão desenvolvidas na fase de produção, em conjunto com a DITEC — fora do escopo da co-criação ou transição da garagem.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6 · MÉTODO DE TRABALHO ─────────────────────────── -->
+    <section class="slide theme-light" data-slide="6">
+      <div class="slide-grid flow-top">
+        <p class="section-label slide-label reveal">05 / Método de trabalho</p>
+        <div class="span-16">
+          <h2 class="section-title compact reveal">Cocriação em 10 sessões</h2>
+        </div>
+        <p class="span-11 body-lg reveal">A jornada técnica explorou RAG, fine-tuning e modelos clássicos. Cada sessão validou ou descartou hipóteses até consolidarmos a arquitetura final.</p>
+
+        <div class="span-16 evolution-stage reveal" style="margin-top:18px;">
+          <div class="evolution-timeline" role="tablist" aria-label="Sessões técnicas Marvin X">
+            <button class="timeline-trigger active" type="button" role="tab" aria-selected="true" aria-controls="evo-marvin-1" data-evolution="0">
+              <span>Sessões 1-2</span>
+              <strong>Indexação Vetorial</strong>
+            </button>
+            <button class="timeline-trigger" type="button" role="tab" aria-selected="false" aria-controls="evo-marvin-2" data-evolution="1">
+              <span>Sessões 3-4</span>
+              <strong>RAG · 5 KBs</strong>
+            </button>
+            <button class="timeline-trigger" type="button" role="tab" aria-selected="false" aria-controls="evo-marvin-3" data-evolution="2">
+              <span>Sessões 5-6</span>
+              <strong>Fine-tuning</strong>
+            </button>
+            <button class="timeline-trigger" type="button" role="tab" aria-selected="false" aria-controls="evo-marvin-4" data-evolution="3">
+              <span>Sessão 7</span>
+              <strong>Associador v1</strong>
+            </button>
+            <button class="timeline-trigger" type="button" role="tab" aria-selected="false" aria-controls="evo-marvin-5" data-evolution="4">
+              <span>Sessão 8</span>
+              <strong>SVM + Busca DUAL</strong>
+            </button>
+            <button class="timeline-trigger" type="button" role="tab" aria-selected="false" aria-controls="evo-marvin-6" data-evolution="5">
+              <span>Sessão 9</span>
+              <strong>Refino + Limiar ★</strong>
+            </button>
+          </div>
+
+          <div class="evolution-details">
+            <article class="evolution-detail active" id="evo-marvin-1" role="tabpanel">
+              <span>Sessões 1-2</span>
+              <h3>Fundamentos de Indexação Vetorial</h3>
+              <p>Revisão de artefatos jurídicos, definição das 15 ODs alvo, ingestão no Milvus. Estratégias de chunking, embeddings e refino do retrieval. Preparou o terreno para os experimentos com RAG.</p>
+            </article>
+            <article class="evolution-detail" id="evo-marvin-2" role="tabpanel" hidden>
+              <span>Sessões 3-4</span>
+              <h3>RAG · 5 estratégias de KB</h3>
+              <p>Comparamos 5 formas de organizar a knowledge base: Resumo dos Motivos, Seção DOS FATOS, Combinado, Curadoria Humana e Documentos Diferenciados. <strong>52% de acurácia</strong> - Teto da abordagem RAG.</p>
+            </article>
+            <article class="evolution-detail" id="evo-marvin-3" role="tabpanel" hidden>
+              <span>Sessões 5-6</span>
+              <h3>Fine-tuning com InstructLab</h3>
+              <p>Granite IBM fine-tuned via InstructLab e deployado no HuggingFace. <strong>63.5% de acurácia</strong></p>
+            </article>
+            <article class="evolution-detail" id="evo-marvin-4" role="tabpanel" hidden>
+              <span>Sessão 7</span>
+              <h3>Agente Associador v1 (busca única)</h3>
+              <p>Primeira versão do associador. Identificou a necessidade de combinar determinismo (contrato) com inferência (NLU) → motivou a busca DUAL. <strong>68.2% de acurácia</strong> (com Granite 3-8B - ainda abaixo do SVM) - hipótese descartada: tarefa muito pequena para justificar fine-tuning de LLM.</p>
+            </article>
+            <article class="evolution-detail" id="evo-marvin-5" role="tabpanel" hidden>
+              <span>Sessão 8</span>
+              <h3>SVM no WML + Associador busca DUAL</h3>
+              <p>Pivô técnico: substituímos o classificador LLM por modelo SVM - <strong>82% de acurácia</strong>. O Associador passa a executar SEMPRE as duas buscas em sequência (determinística + NLU) e retorna blocos separados + união.</p>
+            </article>
+            <article class="evolution-detail" id="evo-marvin-6" role="tabpanel" hidden>
+              <span>Sessão 9</span>
+              <h3>Refino com limiar de confiança</h3>
+              <p>Adicionamos um limiar de confiança ≥ 0.5 sobre o SVM da Sessão 8. Resultado: <strong>93.3% de acurácia</strong>. Governança humana mantida na cauda longa. Hipótese validada: combinar IA determinística (SVM, busca por contrato) com IA generativa (LLM para extração e justificativa) entrega mais <strong>precisão</strong>, mais <strong>explicabilidade</strong> e <strong>menor custo</strong> do que qualquer abordagem isolada.</p>
+            </article>
+
+          </div>
+        </div>
+
+        <div class="span-16 reveal" style="margin-top:18px;">
+          <div class="hypothesis conclusion">
+            <p><strong>Conclusão técnica:</strong> Combinar IA determinística (SVM, busca por contrato) com IA generativa (LLM para extração e justificativa) entrega mais <strong>precisão</strong>, mais <strong>explicabilidade</strong> e <strong>menor custo</strong> do que qualquer abordagem isolada.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6 · RESULTADOS (igual ao slide 9 do template - Painel de Monitoramento) ─────────────────────────── -->
+    <section class="slide theme-light" data-slide="7">
+      <div class="slide-grid flow-top">
+        <p class="section-label slide-label reveal">06 / Resultados</p>
+        <div class="span-16">
+          <h2 class="section-title narrow reveal">Indicadores que <strong>governam</strong> o ecossistema.</h2>
+        </div>
+        <p class="span-11 body-lg reveal">O painel agrega métricas por agente (cobertura, latência), métricas globais do pipeline (taxa fim-a-fim) e qualidade das predições (acurácia da OD, hit-rate de produtos).</p>
+
+        <div class="span-16 monitoring-panel reveal" style="grid-template-columns:repeat(2,minmax(0,1fr)); max-width:760px; margin-left:auto; margin-right:auto;">
+          <article class="kpi-tile">
+            <p class="kpi-label">Taxa fim-a-fim</p>
+            <div class="kpi-value">85.0%</div>
+            <span class="kpi-detail">Petições que passam por todas as 4 etapas (Extrator → Resumidor → Classificador → Associador)</span>
+          </article>
+          <article class="kpi-tile">
+            <p class="kpi-label">Acurácia OD</p>
+            <div class="kpi-value">93.3%</div>
+            <span class="kpi-detail">Classificador com limiar de confiança ≥ 0.5</span>
+          </article>
+        </div>
+
+        <div class="span-16 reveal" style="margin-top:24px;">
+          <p class="section-label" style="margin-bottom:10px;">Cobertura por etapa do fluxo</p>
+          <div class="class-results named">
+            <div class="class-row">
+              <span class="class-code">Extrator</span>
+              <div class="class-bar"><span class="class-bar-fill" style="width:100%"></span></div>
+              <span class="class-value">100.0%</span>
+            </div>
+            <div class="class-row">
+              <span class="class-code">Resumidor</span>
+              <div class="class-bar"><span class="class-bar-fill" style="width:93.3%"></span></div>
+              <span class="class-value">93.3%</span>
+            </div>
+            <div class="class-row">
+              <span class="class-code">Classificador</span>
+              <div class="class-bar"><span class="class-bar-fill" style="width:93.3%"></span></div>
+              <span class="class-value">93.3%</span>
+            </div>
+            <div class="class-row">
+              <span class="class-code">Associador</span>
+              <div class="class-bar"><span class="class-bar-fill" style="width:88.0%"></span></div>
+              <span class="class-value">88.0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8 · RESULTADOS POR ORIGEM DA DEMANDA ─────────────── -->
+    <section class="slide theme-light" data-slide="8">
+      <div class="slide-grid flow-top">
+        <p class="section-label slide-label reveal">06 / Classes de Origem da Demanda</p>
+        <div class="span-16">
+          <h2 class="section-title compact reveal">Classes de Origem da Demanda empregadas durante o piloto</h2>
+        </div>
+
+        <div class="span-16 reveal" style="margin-top:10px;">
+          <div class="od-legend">
+            <div class="od-code dim"><span>32</span><p>Alteração das condições contratadas</p></div>
+            <div class="od-code"><span>66</span><p>Encargos excessivos</p></div>
+            <div class="od-code"><span>80</span><p>Operações de crédito — limitação em 30%</p></div>
+            <div class="od-code"><span>85</span><p>Produto ou serviço não solicitado</p></div>
+            <div class="od-code"><span>88</span><p>Produto ou serviço — contratação/renovação/renegociação recusada pelo banco</p></div>
+            <div class="od-code"><span>99</span><p>Tarifa não solicitada</p></div>
+            <div class="od-code"><span>145</span><p>Superendividamento</p></div>
+            <div class="od-code"><span>166</span><p>Apresentação de documentação</p></div>
+            <div class="od-code dim"><span>185</span><p>Cobrança indevida de produtos ou serviços</p></div>
+            <div class="od-code"><span>190</span><p>Insuficiência de documentos para identificar origem da demanda</p></div>
+            <div class="od-code"><span>192</span><p>Fraudes em cartão de crédito</p></div>
+            <div class="od-code dim"><span>193</span><p>Abertura de conta corrente/relacionamento negocial com documentos falsos</p></div>
+            <div class="od-code"><span>208</span><p>Bloqueio de conta ou produtos sem aviso prévio ou motivo justificado</p></div>
+            <div class="od-code"><span>503</span><p>Cadastro restritivo</p></div>
+            <div class="od-code"><span>516</span><p>Falhas na administração de recursos de terceiros — Pasep</p></div>
+            <div class="od-code"><span>520</span><p>Falhas na administração de recursos de terceiros — FIES</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7 · PRODUTIVIDADE ─────────────────────────── -->
+    <section class="slide theme-light" data-slide="9">
+      <div class="slide-grid">
+        <p class="section-label slide-label reveal">07 / Produtividade</p>
+        <div class="span-16">
+          <h2 class="section-title narrow reveal">Ganho de escala melhorando a <strong>produtividade</strong></h2>
+        </div>
+
+        <div class="span-16 two-up reveal" style="margin-top: 24px;">
+          <article class="role-card">
+            <span class="role-label">Processo Atual</span>
+            <h3>22 operadores</h3>
+            <ul>
+              <li><h4>5 min </h4>é o tempo médio para cada cadastro de classificação (*)</li>
+              <li><h4>1584</h4> é o número estimado de cadastros por dia (6h/operador) (*)</li>
+              <li>Processo manual sujeito a subjetividade humana</li>
+            </ul>
+          </article>
+          <article class="role-card">
+            <span class="role-label">Solução IBM</span>
+            <h3>Automação Inteligente</h3>
+            <ul>
+              <li><h4>41 sec</h4> é o tempo que a Solução IBM leva para classificar uma petição</li>
+              <li><h4>10 classificações</h4> em paralelo é a capacidade da solução IBM</li>
+              <li><h4>1h48</h4> é o tempo médio que a Solução IBM leva para classificar 1584 petições</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="span-16 reveal" style="margin-top: 20px;">
+          <p style="font-size: 0.875rem; color: var(--gray-60); font-style: italic;">* Dados fornecidos pelo time DIRIS</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8 · PRÓXIMOS PASSOS ─────────────────────────── -->
+    <section class="slide theme-light" data-slide="10">
+      <div class="slide-grid">
+        <p class="section-label slide-label reveal">08 / Próximos passos</p>
+        <div class="span-16">
+          <h2 class="section-title narrow reveal">Passos para <strong>escalar a solução</strong></h2>
+        </div>
+
+        <div class="span-16 roadmap big reveal" style="grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; max-width:1000px; margin-left:auto; margin-right:auto;">
+          <article class="roadmap-step">
+            <span class="step-phase">01 · Transição da Garagem</span>
+            <h4>Transferência para o time DIRIS</h4>
+            <ul>
+              <li>Transferência de conhecimento</li>
+              <li>Artefatos técnicos: agentes, ferramentas, bases de conhecimento, fluxos, notebooks e modelos</li>
+            </ul>
+          </article>
+          <article class="roadmap-step">
+            <span class="step-phase">02 · Apoio Técnico · Ambiente Produtivo</span>
+            <h4>Caminho para produção</h4>
+            <ul>
+              <li>Apoio, em conjunto com a DITEC, para validação e integração</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Navigation ── -->
+  <nav class="nav-controls" aria-label="Controles da apresentação">
+    <div class="slide-dots" id="dots" role="tablist" aria-label="Navegar para slide"></div>
+  </nav>
+
+  <!-- ── Lightbox (zoom em imagens marcadas com data-zoom) ── -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Visualização ampliada">
+    <button class="lb-close" type="button" aria-label="Fechar (Esc)">×</button>
+    <img id="lightbox-img" src="" alt="">
+    <p class="lb-caption" id="lightbox-caption"></p>
+  </div>
+
+</div>
+
+<script>
+  /* ── State ── */
+  let current = 1;
+  const slides   = Array.from(document.querySelectorAll('.slide'));
+  const total    = slides.length;
+  const dotsEl   = document.getElementById('dots');
+  const counterEl= document.getElementById('counter');
+  const barEl    = document.getElementById('progressBar');
+  const fsBtn    = document.getElementById('fullscreenBtn');
+  let wheelLocked= false;
+
+  /* ── Dots ── */
+  slides.forEach((_, i) => {
+    const btn = document.createElement('button');
+    btn.type  = 'button';
+    btn.className = 'dot' + (i === 0 ? ' active' : '');
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-label', `Slide ${i + 1}`);
+    btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    btn.onclick = () => goToSlide(i + 1);
+    dotsEl.appendChild(btn);
+  });
+
+  /* ── Navigation ── */
+  function goToSlide(n) {
+    const nextIndex = ((n - 1 + total) % total) + 1;
+    const prev = document.querySelector('.slide.active');
+    if (prev) { prev.classList.remove('active'); prev.scrollTop = 0; }
+    const next = document.querySelector(`.slide[data-slide="${nextIndex}"]`);
+    if (next) next.classList.add('active');
+    current = nextIndex;
+    updateNav();
+    requestAnimationFrame(() => animateSlide(next));
+  }
+
+  function changeSlide(dir) { goToSlide(current + dir); }
+
+  function updateNav() {
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      const active = i + 1 === current;
+      d.classList.toggle('active', active);
+      d.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    counterEl.textContent = String(current).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+    barEl.style.width = (current / total * 100) + '%';
+  }
+
+  /* ── Reveal animation ── */
+  function animateSlide(slide) {
+    if (!slide) return;
+    slide.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transition = 'none';
+      el.style.opacity    = '0';
+      el.style.transform  = 'translateY(22px)';
+      void el.offsetHeight; /* force reflow */
+      el.style.transition = `opacity 360ms cubic-bezier(0.2,0,0.38,0.9) ${i * 65}ms,
+                              transform 360ms cubic-bezier(0.2,0,0.38,0.9) ${i * 65}ms`;
+      el.style.opacity    = '1';
+      el.style.transform  = 'translateY(0)';
+    });
+    /* trigger bar fills */
+    slide.querySelectorAll('.class-bar-fill, .bar-fill').forEach((bar, i) => {
+      const finalWidth = bar.style.width || (bar.classList.contains('w-92') ? '92%' :
+                          bar.classList.contains('w-88') ? '88%' :
+                          bar.classList.contains('w-86') ? '86%' :
+                          bar.classList.contains('w-74') ? '74%' : '0%');
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
+      void bar.offsetHeight;
+      bar.style.transition = `width 700ms cubic-bezier(0.2,0,0.38,0.9) ${200 + i * 40}ms`;
+      bar.style.width = finalWidth;
+    });
+  }
+
+  /* ── Timeline (slide evolução por sessão) ── */
+  function initEvolutionTimeline() {
+    const triggers = Array.from(document.querySelectorAll('.timeline-trigger'));
+    const details = Array.from(document.querySelectorAll('.evolution-detail'));
+    if (!triggers.length || !details.length) return;
+
+    function activate(index) {
+      triggers.forEach((trigger, i) => {
+        const isActive = i === index;
+        trigger.classList.toggle('active', isActive);
+        trigger.setAttribute('aria-selected', String(isActive));
+      });
+      details.forEach((detail, i) => {
+        const isActive = i === index;
+        detail.classList.toggle('active', isActive);
+        detail.hidden = !isActive;
+      });
+    }
+    triggers.forEach((trigger, index) => {
+      trigger.addEventListener('click', () => activate(index));
+    });
+  }
+
+  /* ── Keyboard ── */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+    if (e.key === 'ArrowLeft')                    { e.preventDefault(); changeSlide(-1); }
+    if (e.key.toLowerCase() === 'f')              toggleFullscreen();
+  });
+
+  /* ── Fullscreen ── */
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  }
+  fsBtn.addEventListener('click', toggleFullscreen);
+  document.addEventListener('fullscreenchange', () => {
+    fsBtn.textContent = document.fullscreenElement ? 'Sair' : 'Tela cheia';
+  });
+
+  /* ── Scroll navigation ── */
+  document.querySelector('.deck').addEventListener('wheel', e => {
+    const active = document.querySelector('.slide.active');
+    if (!active || wheelLocked || Math.abs(e.deltaY) < 50) return;
+    const atTop    = active.scrollTop <= 0;
+    const atBottom = active.scrollTop + active.clientHeight >= active.scrollHeight - 4;
+    if (e.deltaY > 0 && atBottom) { changeSlide(1);  lockWheel(); }
+    if (e.deltaY < 0 && atTop)    { changeSlide(-1); lockWheel(); }
+  }, { passive: true });
+
+  function lockWheel() {
+    wheelLocked = true;
+    setTimeout(() => { wheelLocked = false; }, 540);
+  }
+
+  /* ── Touch swipe ── */
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend',   e => {
+    const delta = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 50) changeSlide(delta > 0 ? 1 : -1);
+  });
+
+  /* ── Lightbox (zoom em imagens [data-zoom]) ── */
+  function initLightbox() {
+    const lb        = document.getElementById('lightbox');
+    const lbImg     = document.getElementById('lightbox-img');
+    const lbCap     = document.getElementById('lightbox-caption');
+    const lbClose   = lb?.querySelector('.lb-close');
+    if (!lb || !lbImg) return;
+
+    document.querySelectorAll('[data-zoom]').forEach(el => {
+      el.addEventListener('click', e => {
+        const img = el.tagName === 'IMG' ? el : el.querySelector('img');
+        if (!img) return;
+        e.stopPropagation();
+        lbImg.src = img.src;
+        lbImg.alt = img.alt || '';
+        lbCap.textContent = img.alt || '';
+        lb.classList.add('open');
+      });
+    });
+
+    function close() { lb.classList.remove('open'); lbImg.src = ''; }
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+    lbClose?.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) close(); });
+  }
+
+  /* ── Auth gate (token de acesso) ── */
+  (function initAuthGate(){
+    const TOKEN = 'marvinx';
+    const gate  = document.getElementById('authgate');
+    if (!gate) return;
+    const form  = document.getElementById('authgate-form');
+    const input = document.getElementById('authgate-input');
+    const error = document.getElementById('authgate-error');
+    function unlock(){ gate.classList.add('hidden'); }
+    try { if (sessionStorage.getItem('marvinx_auth') === '1') { unlock(); return; } } catch(e){}
+    setTimeout(() => input && input.focus(), 50);
+    form && form.addEventListener('submit', e => {
+      e.preventDefault();
+      if ((input.value || '').trim().toLowerCase() === TOKEN) {
+        try { sessionStorage.setItem('marvinx_auth', '1'); } catch(e){}
+        unlock();
+      } else {
+        error.hidden = false;
+        form.classList.remove('authgate-shake'); void form.offsetWidth; form.classList.add('authgate-shake');
+        input.value = ''; input.focus();
+      }
+    });
+  })();
+
+  /* ── Init ── */
+  updateNav();
+  animateSlide(document.querySelector('.slide.active'));
+  initEvolutionTimeline();
+  initLightbox();
+</script>
+</body>
+</html>
